@@ -1,0 +1,29 @@
+options {
+
+	directory "/var/cache/bind";
+
+        forwarders {
+                {% for r in route -%}
+                {{r}};
+                {%endfor%}
+	};
+
+        allow-query { {%- for n in allowed %}{{ n }}{% endfor %} };
+    
+	dnssec-validation no;
+
+};
+
+statistics-channels {
+  inet 127.0.0.1 port 8053 allow { 127.0.0.1; };
+};
+
+key "dns_transfer_key" {
+        algorithm hmac-sha256;
+        secret "{{ dns_transfer_key }}";
+};
+
+key "dns_update_key" {
+	algorithm hmac-sha256;
+	secret "{{ dns_update_key }}";
+};

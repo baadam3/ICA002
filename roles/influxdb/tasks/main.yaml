@@ -1,0 +1,35 @@
+- name: Add influxdb apt key
+  ansible.builtin.apt_key:
+    url: https://repos.influxdata.com/influxdb.key
+    state: present
+
+- name: Add influxdb's repository into sources list
+  ansible.builtin.apt_repository:
+    repo: deb https://repos.influxdata.com/ubuntu focal stable
+    state: present
+  notify: Apt update
+
+- name: Install influxdb and telegraf
+  apt:
+    name: 
+      - influxdb
+      - telegraf
+
+- name: Start service influxdb
+  ansible.builtin.service:
+    name: influxdb
+    state: started
+    enabled: yes
+
+- name: Start service telegraf
+  service:
+    name: telegraf
+    state: started
+    enabled: yes
+
+- name: Copy telegraf.conf
+  template:
+    src: telegraf.conf
+    dest: /etc/telegraf/telegraf.conf
+  notify: Restart telegraf
+

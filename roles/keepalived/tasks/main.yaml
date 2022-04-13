@@ -1,0 +1,47 @@
+- name: Install keepalived
+  apt:
+    name:
+      - keepalived
+
+- name: Add user keepalived_script
+  user:
+    name: "keepalived_script"
+    home: /home/keepalived_script
+
+- name: Copy keepalived conf
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+  notify: Restart keepalived
+
+- name: Copy ha88
+  template:
+    src: ha88.j2
+    dest: /usr/local/bin/ha88
+    mode: "0755"
+  notify: Restart keepalived
+
+- name: start keepalived
+  service:
+    name: keepalived
+    state: started
+
+- name: Download keepalived exporter
+  unarchive:
+    src: https://github.com/cafebazaar/keepalived-exporter/releases/download/v1.2.0/keepalived-exporter-1.2.0.linux-amd64.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: Keepalived exporter service
+  template:
+    src: keepalived-prometheus-exporter.service.j2
+    dest: /etc/systemd/system/keepalived-prometheus-exporter.service
+  notify:
+    - Reload daemons
+    - Restart keepalived-exporter
+
+- name: Ensure keepalived running
+  service:
+    name: keepalived-prometheus-exporter.service
+    state: started
+    enabled: yes

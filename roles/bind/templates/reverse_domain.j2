@@ -1,0 +1,15 @@
+$TTL	604800
+42.168.192.in-addr.arpa.	IN	SOA	ToxicalBullet-1.{{ startup }}. balint.{{ startup }}. (
+			      2		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+
+{% for vm  in groups ['dns_server'] %}
+42.168.192.in-addr.arpa.	IN	NS {{ vm }}.{{ startup }}.
+{% endfor %}
+{% for vm  in groups ['all'] %}
+{{ (hostvars[vm]['ansible_default_ipv4']['address']|split('.'))[3] }} IN PTR {{ vm }}.{{ startup }}.
+{% endfor %}

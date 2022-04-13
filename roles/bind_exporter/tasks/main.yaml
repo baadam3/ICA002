@@ -1,0 +1,8 @@
+- name: Download bind exporter
+  apt:
+    name: prometheus-bind-exporter
+  
+- name: Start prometheus-bind-exporter
+  service:
+   name: prometheus-bind-exporter
+   state: started

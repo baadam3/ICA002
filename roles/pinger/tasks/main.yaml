@@ -1,0 +1,40 @@
+- name: Linux user pinger
+  ansible.builtin.user:
+    name: pinger
+
+- name: Install fping
+  apt:
+    name: fping
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /etc/pinger
+    state: directory
+    mode: '0755'
+
+- template:
+   src: pinger.conf
+   dest: /etc/pinger/pinger.conf
+  notify:
+   - Restart service pinger
+
+- template:
+   src: pinger.sh
+   dest: /usr/local/bin/pinger
+   mode: '0755'
+  notify:
+   - Restart service pinger
+
+- template:
+    src: pinger.service
+    dest: /etc/systemd/system/pinger.service
+  notify: 
+      - Systemd reload
+      - Restart service pinger
+      #- Start service pinger
+
+- name: Start service pinger
+  ansible.builtin.service:
+    name: pinger
+    state: started
+    enabled: yes

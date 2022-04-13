@@ -1,0 +1,16 @@
+- name: Download node exporter
+  apt:
+    name: prometheus-nginx-exporter
+
+- template:
+    src: exporter.j2
+    dest: /etc/nginx/sites-enabled/exporter
+    mode: '0644'
+  notify: 
+    - Restart nginx
+    - Restart nginx exporter
+
+- name: start prometheus-nginx-exporter
+  service:
+    name: prometheus-nginx-exporter
+    state: started

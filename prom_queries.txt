@@ -1,0 +1,4 @@
+rate(node_cpu_seconds_total[1m])
+bind_up
+mysql_up
+

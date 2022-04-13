@@ -1,0 +1,125 @@
+- name: Install bind9
+  apt:
+    name: 
+    - bind9
+    - python3-dnspython
+   
+- name: Configure master file startup
+  when: inventory_hostname in groups['dns_master']
+  ansible.builtin.template:
+    src: db.adam
+    dest: /var/cache/bind/{{ startup }}
+    force: no
+    #force: yes
+    mode: '0755'
+  notify:
+    - Restart bind9
+    - rndc reload 
+
+- name: Configure reverse master file reverse
+  when: inventory_hostname in groups['dns_master']
+  ansible.builtin.template:
+    src: reverse_domain.j2
+    dest: /var/cache/bind/db.reverse
+    #force: yes
+    force: no
+  notify:
+    - Restart bind9
+    - rndc reload 
+
+- name: Copy named.conf.options.j2
+  template:
+    src: named.conf.options.j2
+    dest: /etc/bind/named.conf.options
+  notify:
+     - Restart bind9
+  no_log: true
+
+- template:
+   src: db.adam
+   dest: /var/cache/bind/{{ startup }}
+  notify: rndc reload
+
+- name: Copy named.conf.local.j2
+  template:
+    src: named.conf.local.j2
+    dest: /etc/bind/named.conf.local
+  notify:
+     - Restart bind9
+  no_log: true
+
+# - name: resolve directory
+#   file:
+#     path: /run/systemd/resolve
+#     state: directory
+#   become: yes
+
+- template:
+   src: resolv.conf.j2
+   dest: /etc/resolv.conf
+  notify: 
+    - rndc reload
+    - resolve directory
+    - systemd/resolve
+
+# - name: Create a directory if it does not exist
+#   ansible.builtin.file:
+#     path: /run/systemd/resolve/
+#     state: directory
+#     mode: '0766'
+
+# - name: Copy /run/systemd/resolve/resolv.conf for docker
+#   ansible.builtin.template:
+#    src: resolv.conf.j2
+#    dest: /run/systemd/resolve/resolv.conf
+#   notify: 
+#   - rndc reload
+#   - Restart bind9
+  
+# - name: Copy /run/systemd/resolve/resolv.conf for docker
+#   ansible.builtin.template:
+#    src: resolv.conf.j2
+#    dest: /run/systemd/resolve/resolv.conf
+
+- name: Stop service systemd-resolved
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: stopped
+    enabled: no
+
+- name: meta flush
+  meta: flush_handlers
+
+- name: Ensure bind9 is running
+  ansible.builtin.service:
+    name: bind9
+    state: started
+
+##flush handlers
+- name: Set A records
+  when: inventory_hostname in groups["dns_master"]
+  nsupdate:
+    key_algorithm: "hmac-sha256"
+    key_name: "dns_update_key"
+    key_secret: "{{ dns_update_key }}"
+    server: "localhost"
+    zone: "{{ startup }}"
+    record: "{{ item.key }}"
+    type: "A"
+    value: "{{ item.value }}"
+  loop: "{{ dns_a_records | dict2items }}"
+  run_once: True
+  
+- name: Set CNAME records
+  when: inventory_hostname in groups["dns_master"]
+  nsupdate:
+    key_algorithm: "hmac-sha256"
+    key_name: "dns_update_key"
+    key_secret: "{{ dns_update_key }}"
+    server: "localhost"
+    zone: "{{ startup }}"
+    record: "{{ item.key }}"
+    type: "CNAME"
+    value: "{{ item.value }}"
+  loop: "{{ dns_cname_records | dict2items }}"
+  run_once: True

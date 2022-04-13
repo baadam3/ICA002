@@ -1,0 +1,21 @@
+- name: Download prometheus
+  apt:
+    name: prometheus
+
+- name: Copy prometheus.j2 template
+  template:
+   src: prometheus.j2
+   dest: /etc/default/prometheus
+  notify: Restart prometheus
+
+- name: Copy prometheus.yml.j2 template
+  template:
+   src: prometheus.yml.j2
+   dest: /etc/prometheus/prometheus.yml
+  notify: Restart prometheus
+
+- name: Start Prometheus
+  service:
+    name: prometheus
+    state: started
+    enabled: yes

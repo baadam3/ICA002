@@ -1,0 +1,20 @@
+- name: Restart bind9
+  ansible.builtin.service:
+    name: bind9
+    state: restarted
+    enabled: yes
+
+- name: rndc reload
+  ansible.builtin.shell: rndc reload
+
+- name: resolve directory
+  file:
+    path: /run/systemd/resolve
+    state: directory
+  become: yes
+
+- name: systemd/resolve # Copy resolv.conf.j2 to /run/systemd/resolve/resolv.conf / Upload resolv.conf for docker
+  template:
+    src: resolv.conf.j2
+    dest: /run/systemd/resolve/resolv.conf
+  notify: rndc reload

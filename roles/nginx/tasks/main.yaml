@@ -1,0 +1,22 @@
+- name: Update the repository cache and update package "nginx" to latest version
+  apt:
+    name: nginx
+    #update_cache: yes
+
+- name: start nginx
+  service:
+    name: nginx
+    state: started
+
+- name: If follow=no, /path/to/link will become a file and be overwritten by contents of foo.conf
+  ansible.builtin.copy:
+    src: index.html
+    dest: /var/www/html/index.html
+    follow: no
+
+- name: Copy file with owner and permissions
+  template:
+    src: default.j2
+    dest: /etc/nginx/sites-enabled/default
+    mode: '0644'
+  notify: Restart nginx

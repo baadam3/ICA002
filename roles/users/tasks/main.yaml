@@ -1,0 +1,19 @@
+- name: Linux user juri
+  ansible.builtin.user:
+    name: hudolejev
+
+- name: Linux user roman
+  ansible.builtin.user:
+    name: romankuchin
+
+- name: Public key of linux user juri
+  ansible.posix.authorized_key:
+    user: hudolejev
+   # state: present
+    key: https://github.com/hudolejev.keys
+
+- name: Public key of linux user roman
+  ansible.posix.authorized_key:
+    user: romankuchin
+   # state: present
+    key: https://github.com/romankuchin.keys

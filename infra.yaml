@@ -1,0 +1,144 @@
+---
+
+- name: Collect info about all VMs
+  hosts: all
+  gather_facts: yes
+  tasks:
+    - setup:
+
+- name: Init
+  hosts: all
+  gather_facts: no
+  become: yes
+  roles:
+    - init
+    - backup
+  tags:
+    - ini
+    - b
+
+- name: iptables
+  hosts: all #web_servers
+  gather_facts: no
+  become: yes
+  roles:
+    - iptables
+  tags:
+   -ipt
+
+- name: Bind9 DNS server
+  hosts: dns_server
+  gather_facts: no
+  become: yes
+  roles:
+    - bind
+    - bind_exporter
+  tags:
+    - bind
+
+- name: Docker
+  hosts: docker
+  gather_facts: no
+  become: yes
+  roles:
+    - docker
+  tags:
+    -d
+
+- name: nginx
+  hosts: all
+  gather_facts: no
+  become: yes
+  roles:
+    - users
+    - nginx
+    - nginx_exporter
+  tags:
+    - ng
+
+- name: Rsyslog
+  hosts: all
+  gather_facts: no
+  become: yes
+  roles:
+  - rsyslog
+  tags:
+   - r
+
+- name: Prometheus
+  hosts: prometheus
+  gather_facts: no
+  become: yes
+  roles:
+    - prometheus
+  tags:
+    - p
+
+- name: Database server
+  hosts: db_servers
+  gather_facts: no
+  become: yes
+  roles:
+    - mysql
+    - mysql_exporter
+    - mysql_backup
+  tags: 
+    - m
+
+- name: Node
+  hosts: all
+  gather_facts: no
+  become: yes
+  roles:
+    - node_exporter
+
+# #- name: Webservers LAB2
+#   hosts: web_servers
+#   gather_facts: no
+#   become: yes
+#   roles:
+#    #- nginx
+#   tags:
+#    - web
+
+- name: Agama
+  hosts: web_servers
+  gather_facts: no
+  become: yes
+  roles:
+    - agama
+    - uwsgi
+  tags:
+    - agama
+
+- name: Grafana
+  hosts: grafana
+  gather_facts: no
+  become: yes
+  roles:
+    - grafana
+  tags:
+   - g
+
+- name: Influx DB
+  hosts: influxdb
+  gather_facts: no
+  become: yes
+  roles:
+   - influxdb
+   - pinger
+   - influxdb_exporter
+   - influxdb_backup
+  tags:
+   - i
+
+
+- name: Keepalived and HAproxy
+  hosts: haproxy
+  gather_facts: yes
+  become: yes
+  roles:
+    - keepalived
+    - haproxy
+  tags:
+    - load

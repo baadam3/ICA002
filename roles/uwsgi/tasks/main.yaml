@@ -1,0 +1,24 @@
+- name: Update the repository cache and update package "uwsgi" to latest version
+  apt:
+    name: uwsgi
+    #state: latest
+    #update_cache: yes
+
+- name: Update the package "uwsgi-plugin-python3" to latest version
+  apt:
+    name: uwsgi-plugin-python3
+    state: latest
+#    update_cache: yes
+
+#- name: Copy file with owner and permissions
+#  ansible.builtin.template:
+#    src: agama.ini
+#    dest: /etc/uwsgi/apps-enabled/agama.ini
+#    owner: agama
+#    mode: '0644'
+#  notify: Restart uwsgi
+
+- name: start uwsgi
+  service:
+    name: uwsgi
+    state: started

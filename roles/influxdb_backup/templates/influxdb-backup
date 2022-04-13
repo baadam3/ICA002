@@ -1,0 +1,13 @@
+59 13 * * * backup ssh ToxicalBullet@backup.{{startup}} mkdir influxdb
+
+0 0 * * * backup rm -rf /home/backup/influxdb/*; influxd backup -portable -database telegraf /home/backup/influxdb
+
+1 0 * * 0  backup  duplicity --no-encryption full /home/backup/influxdb/ rsync://ToxicalBullet@backup.{{startup}}//home/ToxicalBullet/influxdb
+
+2 0 * * 1-6  backup  duplicity --no-encryption incremental /home/backup/influxdb/ rsync://ToxicalBullet@backup.{{startup}}//home/ToxicalBullet/influxdb
+
+0 14 * * 2 backup rm -rf /home/backup/influxdb/*; influxd backup -portable -database telegraf /home/backup/influxdb
+
+1 14 * * 2  backup  duplicity --no-encryption full /home/backup/influxdb/ rsync://ToxicalBullet@backup.{{startup}}//home/ToxicalBullet/influxdb
+
+2 14 * * 1-6  backup  duplicity --no-encryption incremental /home/backup/influxdb/ rsync://ToxicalBullet@backup.{{startup}}//home/ToxicalBullet/influxdb

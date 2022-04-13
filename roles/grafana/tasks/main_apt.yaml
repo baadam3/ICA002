@@ -1,0 +1,88 @@
+- name: Add an Apt signing key, uses whichever key is at the URL
+  ansible.builtin.apt_key:
+    url: https://packages.grafana.com/gpg.key
+    state: present
+
+- name: Add specified repository into sources list
+  ansible.builtin.apt_repository:
+    repo: deb https://packages.grafana.com/oss/deb stable main
+    state: present
+  notify: Apt update
+
+- name: Install grafana
+  apt:
+    name: grafana
+    state: present
+  register: grafana_installed
+
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /var/lib/grafana/dashboards
+    state: directory
+    mode: '0755'
+
+- template:
+   src: grafana.ini.j2
+   dest: /etc/grafana/grafana.ini
+
+- name: Copy main.json to dasboards
+  copy:
+    src: main.json
+    dest: /var/lib/grafana/dashboards/main.json
+  notify: Restart grafana
+
+- name: Copy syslog.json to dasboards
+  copy:
+    src: syslog.json
+    dest: /var/lib/grafana/dashboards/syslog.json
+  notify: Restart grafana
+
+- name: Copy mysql.json to dasboards
+  copy:
+    src: mysql.json
+    dest: /var/lib/grafana/dashboards/mysql.json
+  notify: Restart grafana
+
+- name: Set grafana password
+  ansible.builtin.shell: grafana-cli --homepath "/usr/share/grafana" admin reset-admin-password {{ grafana_password }}
+  notify: Restart grafana
+  no_log: true
+  when: grafana_installed.changed
+  notify: Restart grafana
+
+
+- name: Import Grafana dashboard main
+  community.grafana.grafana_dashboard:
+        grafana_url: "http://{{ansible_host}}:{{ansible_port + 58}}/grafana/"
+        state: present
+        overwrite: yes
+        grafana_user: "admin"
+        grafana_password: "{{ grafana_password }}"
+        path: /var/lib/grafana/dashboards/main.json
+  notify: Restart grafana
+
+
+
+- name: Import Grafana dashboard syslog
+  community.grafana.grafana_dashboard:
+        grafana_url: "http://{{ansible_host}}:{{ansible_port + 58}}/grafana/"
+        state: present
+        overwrite: yes
+        grafana_user: "admin"
+        grafana_password: "{{ grafana_password }}"
+        path: /var/lib/grafana/dashboards/syslog.json
+  notify: Restart grafana
+
+
+- name: Import Grafana dashboard mysql
+  community.grafana.grafana_dashboard:
+        grafana_url: "http://{{ansible_host}}:{{ansible_port + 58}}/grafana/"
+        state: present
+        overwrite: yes
+        grafana_user: "admin"
+        grafana_password: "{{ grafana_password }}"
+        path: /var/lib/grafana/dashboards/mysql.json
+  notify: Restart grafana
+
+

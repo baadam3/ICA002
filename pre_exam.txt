@@ -1,0 +1,1593 @@
+T 21 dets  2021 18:18:46 EET
++ hostname
+baadam
++ /home/balint/ansible-venv/bin/ansible-playbook infra.yaml --diff
+
+PLAY [Collect info about all VMs] **********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [setup] *******************************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+PLAY [Init] ********************************************************************
+
+TASK [init : Update APT cache] *************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [backup : Linux user backup] **********************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+
+TASK [backup : Create a 2048-bit SSH key for user backup in ~backup/.ssh/id_rsa] ***
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [backup : Create a directory /home/backup/restore] ************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [backup : Install duplicity] **********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [backup : Uploads /home/backup/.ssh/known_hosts] **************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+PLAY [iptables] ****************************************************************
+
+TASK [iptables : Install iptables-persistent] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [iptables : fix ssl handshake docker] *************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [iptables : Sleep for 10 seconds and continue with play] ******************
+skipping: [ToxicalBullet-2]
+skipping: [ToxicalBullet-1]
+skipping: [ToxicalBullet-3]
+
+TASK [iptables : Check if  iptables-persistent (netfilter-persistent) is started and if it is not, start it] ***
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [iptables : load iptable-mangle config] ***********************************
+[WARNING]: Attempts to restore iptables state without rollback in case of
+mistake may lead the ansible controller to loose access to the hosts and never
+regain it before fixing firewall rules through a serial console, or any other
+way except SSH. Please set task attribute 'poll' (=15) to 0, and 'async' (=0)
+to a value >2 and not greater than 'ansible_timeout' (=30) (recommended).
+[WARNING]: Attempts to restore iptables state without rollback in case of
+mistake may lead the ansible controller to loose access to the hosts and never
+regain it before fixing firewall rules through a serial console, or any other
+way except SSH. Please set task attribute 'poll' (=15) to 0, and 'async' (=0)
+to a value >2 and not greater than 'ansible_timeout' (=30) (recommended).
+[WARNING]: Attempts to restore iptables state without rollback in case of
+mistake may lead the ansible controller to loose access to the hosts and never
+regain it before fixing firewall rules through a serial console, or any other
+way except SSH. Please set task attribute 'poll' (=15) to 0, and 'async' (=0)
+to a value >2 and not greater than 'ansible_timeout' (=30) (recommended).
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+PLAY [Bind9 DNS server] ********************************************************
+
+TASK [bind : Install bind9] ****************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind : Configure master file startup] ************************************
+skipping: [ToxicalBullet-2]
+skipping: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [bind : Configure reverse master file reverse] ****************************
+skipping: [ToxicalBullet-2]
+skipping: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [bind : Copy named.conf.options.j2] ***************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [bind : template] *********************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind : Copy named.conf.local.j2] *****************************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [bind : template] *********************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind : Stop service systemd-resolved] ************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [bind : meta flush] *******************************************************
+
+TASK [bind : Ensure bind9 is running] ******************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [bind : Set A records] ****************************************************
+skipping: [ToxicalBullet-2] => (item={'key': 'backup', 'value': '192.168.42.156'}) 
+skipping: [ToxicalBullet-2] => (item={'key': 'cloudfare', 'value': '1.1.1.1'}) 
+skipping: [ToxicalBullet-2] => (item={'key': 'google', 'value': '8.8.8.8'}) 
+skipping: [ToxicalBullet-2] => (item={'key': 'google2', 'value': '8.8.4.4'}) 
+
+TASK [bind : Set CNAME records] ************************************************
+skipping: [ToxicalBullet-2]
+
+TASK [bind_exporter : Download bind exporter] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [bind_exporter : Start prometheus-bind-exporter] **************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+PLAY [Docker] ******************************************************************
+
+TASK [docker : Install docker.io and python3-docker] ***************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [docker : Ensure docker is running] ***************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+PLAY [nginx] *******************************************************************
+
+TASK [users : Linux user juri] *************************************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [users : Linux user roman] ************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [users : Public key of linux user juri] ***********************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [users : Public key of linux user roman] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [nginx : Update the repository cache and update package "nginx" to latest version] ***
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [nginx : start nginx] *****************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+
+TASK [nginx : If follow=no, /path/to/link will become a file and be overwritten by contents of foo.conf] ***
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [nginx : Copy file with owner and permissions] ****************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [nginx_exporter : Download node exporter] *********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [nginx_exporter : template] ***********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [nginx_exporter : start prometheus-nginx-exporter] ************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+PLAY [Rsyslog] *****************************************************************
+
+TASK [rsyslog : Copy 10-telegraf.conf to ALL remote machines] ******************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [rsyslog : Start rsyslog] *************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+PLAY [Prometheus] **************************************************************
+
+TASK [prometheus : Download prometheus] ****************************************
+ok: [ToxicalBullet-3]
+
+TASK [prometheus : Copy prometheus.j2 template] ********************************
+ok: [ToxicalBullet-3]
+
+TASK [prometheus : Copy prometheus.yml.j2 template] ****************************
+ok: [ToxicalBullet-3]
+
+TASK [prometheus : Start Prometheus] *******************************************
+ok: [ToxicalBullet-3]
+
+PLAY [Database server] *********************************************************
+
+TASK [mysql : Install mysql] ***************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : Copy override config to overwrite bind address] ******************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : Instal python3 for mysql] ****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : start mysql] *****************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql : MySQL database] **************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : MySQL user] ******************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : Stop service systemd-resolved] ***********************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql : MySQL user for replication] **************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : Set correct mysql server read only] ******************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_exporter : Download mysql exporter] ********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_exporter : template] ***********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_exporter : Create user exporter] ***********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_exporter : Pause for 10 seconds] ***********************************
+skipping: [ToxicalBullet-2]
+
+TASK [mysql_exporter : service] ************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_exporter : template] ***********************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_backup : Create a directory /home/backup/mysql] ********************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_backup : MySQL user backup] ****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_backup : Copy my.cnf to /home/backup/.my.cnf] **********************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_backup : Copy cron mysql-backup to /etc/cron.d/mysql-backup] *******
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+PLAY [Node] ********************************************************************
+
+TASK [node_exporter : Download node exporter] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [node_exporter : start prometheus-node-exporter] **************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+PLAY [Agama] *******************************************************************
+
+TASK [agama : Creating  /opt/agama] ********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Download agama container from URL] *******************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Create agama docker image] ***************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Agama-1 docker container] ****************************************
+[DEPRECATION WARNING]: The container_default_behavior option will change its 
+default value from "compatibility" to "no_defaults" in community.docker 2.0.0. 
+To remove this warning, please specify an explicit value for it now. This 
+feature will be removed from community.docker in version 2.0.0. Deprecation 
+warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Agama-2 docker container] ****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [uwsgi : Update the repository cache and update package "uwsgi" to latest version] ***
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [uwsgi : Update the package "uwsgi-plugin-python3" to latest version] *****
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [uwsgi : start uwsgi] *****************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+PLAY [Grafana] *****************************************************************
+
+TASK [grafana : Create two necessary directories for grafana] ******************
+ok: [ToxicalBullet-3] => (item=/opt/grafana/provisioning/dashboards)
+ok: [ToxicalBullet-3] => (item=/opt/grafana/provisioning/datasources)
+
+TASK [grafana : Copy grafana.ini template] *************************************
+ok: [ToxicalBullet-3]
+
+TASK [grafana : Copy datasource.yaml] ******************************************
+ok: [ToxicalBullet-3]
+
+TASK [grafana : Copy dashboard.yaml] *******************************************
+ok: [ToxicalBullet-3]
+
+TASK [grafana : Copy grafana dashboards] ***************************************
+ok: [ToxicalBullet-3] => (item=syslog)
+ok: [ToxicalBullet-3] => (item=mysql)
+ok: [ToxicalBullet-3] => (item=main)
+
+TASK [grafana : Grafana Docker container] **************************************
+ok: [ToxicalBullet-3]
+
+PLAY [Influx DB] ***************************************************************
+
+TASK [influxdb : Add influxdb apt key] *****************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Add influxdb's repository into sources list] ******************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Install influxdb and telegraf] ********************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Start service influxdb] ***************************************
+changed: [ToxicalBullet-3]
+
+TASK [influxdb : Start service telegraf] ***************************************
+changed: [ToxicalBullet-3]
+
+TASK [influxdb : Copy telegraf.conf] *******************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Linux user pinger] **********************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Install fping] **************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Create a directory if it does not exist] ************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : template] *******************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : template] *******************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : template] *******************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Start service pinger] *******************************************
+changed: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : Download] ********************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : Giving permission to influx_xporter] *****************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : Create service] **************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : start prometheus-influxdb-stats-exporter] ************
+changed: [ToxicalBullet-3]
+
+TASK [influxdb_backup : Create a directory /home/backup/influxdb] **************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_backup : Copy cron influxdb to /etc/cron.d/influxdb-backup] *****
+ok: [ToxicalBullet-3]
+
+PLAY [Keepalived and HAproxy] **************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Install keepalived] *****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Add user keepalived_script] *********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Copy keepalived conf] ***************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Copy ha88] **************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : start keepalived] *******************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Download keepalived exporter] *******************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [keepalived : Keepalived exporter service] ********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Ensure keepalived running] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : Install haproxy] ***********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : Copy haproxy.conf] *********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : Copy prometheus-haproxy-exporter] ******************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : start haproxy] *************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : start haproxy exporter] ****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+PLAY RECAP *********************************************************************
+ToxicalBullet-1            : ok=78   changed=0    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   
+ToxicalBullet-2            : ok=78   changed=0    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+ToxicalBullet-3            : ok=69   changed=4    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+
++ /home/balint/ansible-venv/bin/ansible-playbook infra.yaml --diff
+
+PLAY [Collect info about all VMs] **********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [setup] *******************************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+PLAY [Init] ********************************************************************
+
+TASK [init : Update APT cache] *************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [backup : Linux user backup] **********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [backup : Create a 2048-bit SSH key for user backup in ~backup/.ssh/id_rsa] ***
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [backup : Create a directory /home/backup/restore] ************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [backup : Install duplicity] **********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [backup : Uploads /home/backup/.ssh/known_hosts] **************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+PLAY [iptables] ****************************************************************
+
+TASK [iptables : Install iptables-persistent] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [iptables : fix ssl handshake docker] *************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [iptables : Sleep for 10 seconds and continue with play] ******************
+skipping: [ToxicalBullet-2]
+skipping: [ToxicalBullet-1]
+skipping: [ToxicalBullet-3]
+
+TASK [iptables : Check if  iptables-persistent (netfilter-persistent) is started and if it is not, start it] ***
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+
+TASK [iptables : load iptable-mangle config] ***********************************
+[WARNING]: Attempts to restore iptables state without rollback in case of
+mistake may lead the ansible controller to loose access to the hosts and never
+regain it before fixing firewall rules through a serial console, or any other
+way except SSH. Please set task attribute 'poll' (=15) to 0, and 'async' (=0)
+to a value >2 and not greater than 'ansible_timeout' (=30) (recommended).
+[WARNING]: Attempts to restore iptables state without rollback in case of
+mistake may lead the ansible controller to loose access to the hosts and never
+regain it before fixing firewall rules through a serial console, or any other
+way except SSH. Please set task attribute 'poll' (=15) to 0, and 'async' (=0)
+to a value >2 and not greater than 'ansible_timeout' (=30) (recommended).
+[WARNING]: Attempts to restore iptables state without rollback in case of
+mistake may lead the ansible controller to loose access to the hosts and never
+regain it before fixing firewall rules through a serial console, or any other
+way except SSH. Please set task attribute 'poll' (=15) to 0, and 'async' (=0)
+to a value >2 and not greater than 'ansible_timeout' (=30) (recommended).
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+PLAY [Bind9 DNS server] ********************************************************
+
+TASK [bind : Install bind9] ****************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind : Configure master file startup] ************************************
+skipping: [ToxicalBullet-2]
+skipping: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [bind : Configure reverse master file reverse] ****************************
+skipping: [ToxicalBullet-2]
+skipping: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [bind : Copy named.conf.options.j2] ***************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [bind : template] *********************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind : Copy named.conf.local.j2] *****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind : template] *********************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind : Stop service systemd-resolved] ************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [bind : meta flush] *******************************************************
+
+TASK [bind : Ensure bind9 is running] ******************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind : Set A records] ****************************************************
+skipping: [ToxicalBullet-2] => (item={'key': 'backup', 'value': '192.168.42.156'}) 
+skipping: [ToxicalBullet-2] => (item={'key': 'cloudfare', 'value': '1.1.1.1'}) 
+skipping: [ToxicalBullet-2] => (item={'key': 'google', 'value': '8.8.8.8'}) 
+skipping: [ToxicalBullet-2] => (item={'key': 'google2', 'value': '8.8.4.4'}) 
+
+TASK [bind : Set CNAME records] ************************************************
+skipping: [ToxicalBullet-2]
+
+TASK [bind_exporter : Download bind exporter] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind_exporter : Start prometheus-bind-exporter] **************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+PLAY [Docker] ******************************************************************
+
+TASK [docker : Install docker.io and python3-docker] ***************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [docker : Ensure docker is running] ***************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+PLAY [nginx] *******************************************************************
+
+TASK [users : Linux user juri] *************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [users : Linux user roman] ************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [users : Public key of linux user juri] ***********************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [users : Public key of linux user roman] **********************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+
+TASK [nginx : Update the repository cache and update package "nginx" to latest version] ***
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [nginx : start nginx] *****************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [nginx : If follow=no, /path/to/link will become a file and be overwritten by contents of foo.conf] ***
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [nginx : Copy file with owner and permissions] ****************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [nginx_exporter : Download node exporter] *********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [nginx_exporter : template] ***********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [nginx_exporter : start prometheus-nginx-exporter] ************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+
+PLAY [Rsyslog] *****************************************************************
+
+TASK [rsyslog : Copy 10-telegraf.conf to ALL remote machines] ******************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [rsyslog : Start rsyslog] *************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+
+PLAY [Prometheus] **************************************************************
+
+TASK [prometheus : Download prometheus] ****************************************
+ok: [ToxicalBullet-3]
+
+TASK [prometheus : Copy prometheus.j2 template] ********************************
+ok: [ToxicalBullet-3]
+
+TASK [prometheus : Copy prometheus.yml.j2 template] ****************************
+ok: [ToxicalBullet-3]
+
+TASK [prometheus : Start Prometheus] *******************************************
+ok: [ToxicalBullet-3]
+
+PLAY [Database server] *********************************************************
+
+TASK [mysql : Install mysql] ***************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql : Copy override config to overwrite bind address] ******************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql : Instal python3 for mysql] ****************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql : start mysql] *****************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql : MySQL database] **************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql : MySQL user] ******************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql : Stop service systemd-resolved] ***********************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql : MySQL user for replication] **************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : Set correct mysql server read only] ******************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_exporter : Download mysql exporter] ********************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_exporter : template] ***********************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_exporter : Create user exporter] ***********************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_exporter : Pause for 10 seconds] ***********************************
+skipping: [ToxicalBullet-2]
+
+TASK [mysql_exporter : service] ************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_exporter : template] ***********************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_backup : Create a directory /home/backup/mysql] ********************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_backup : MySQL user backup] ****************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_backup : Copy my.cnf to /home/backup/.my.cnf] **********************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_backup : Copy cron mysql-backup to /etc/cron.d/mysql-backup] *******
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+PLAY [Node] ********************************************************************
+
+TASK [node_exporter : Download node exporter] **********************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [node_exporter : start prometheus-node-exporter] **************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+PLAY [Agama] *******************************************************************
+
+TASK [agama : Creating  /opt/agama] ********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Download agama container from URL] *******************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Create agama docker image] ***************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Agama-1 docker container] ****************************************
+[DEPRECATION WARNING]: The container_default_behavior option will change its 
+default value from "compatibility" to "no_defaults" in community.docker 2.0.0. 
+To remove this warning, please specify an explicit value for it now. This 
+feature will be removed from community.docker in version 2.0.0. Deprecation 
+warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Agama-2 docker container] ****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [uwsgi : Update the repository cache and update package "uwsgi" to latest version] ***
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [uwsgi : Update the package "uwsgi-plugin-python3" to latest version] *****
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [uwsgi : start uwsgi] *****************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+PLAY [Grafana] *****************************************************************
+
+TASK [grafana : Create two necessary directories for grafana] ******************
+ok: [ToxicalBullet-3] => (item=/opt/grafana/provisioning/dashboards)
+ok: [ToxicalBullet-3] => (item=/opt/grafana/provisioning/datasources)
+
+TASK [grafana : Copy grafana.ini template] *************************************
+ok: [ToxicalBullet-3]
+
+TASK [grafana : Copy datasource.yaml] ******************************************
+ok: [ToxicalBullet-3]
+
+TASK [grafana : Copy dashboard.yaml] *******************************************
+ok: [ToxicalBullet-3]
+
+TASK [grafana : Copy grafana dashboards] ***************************************
+ok: [ToxicalBullet-3] => (item=syslog)
+ok: [ToxicalBullet-3] => (item=mysql)
+ok: [ToxicalBullet-3] => (item=main)
+
+TASK [grafana : Grafana Docker container] **************************************
+ok: [ToxicalBullet-3]
+
+PLAY [Influx DB] ***************************************************************
+
+TASK [influxdb : Add influxdb apt key] *****************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Add influxdb's repository into sources list] ******************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Install influxdb and telegraf] ********************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Start service influxdb] ***************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Start service telegraf] ***************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Copy telegraf.conf] *******************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Linux user pinger] **********************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Install fping] **************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Create a directory if it does not exist] ************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : template] *******************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : template] *******************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : template] *******************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Start service pinger] *******************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : Download] ********************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : Giving permission to influx_xporter] *****************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : Create service] **************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : start prometheus-influxdb-stats-exporter] ************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_backup : Create a directory /home/backup/influxdb] **************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_backup : Copy cron influxdb to /etc/cron.d/influxdb-backup] *****
+ok: [ToxicalBullet-3]
+
+PLAY [Keepalived and HAproxy] **************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [keepalived : Install keepalived] *****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Add user keepalived_script] *********************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [keepalived : Copy keepalived conf] ***************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [keepalived : Copy ha88] **************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : start keepalived] *******************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Download keepalived exporter] *******************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Keepalived exporter service] ********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Ensure keepalived running] **********************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [haproxy : Install haproxy] ***********************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [haproxy : Copy haproxy.conf] *********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : Copy prometheus-haproxy-exporter] ******************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : start haproxy] *************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : start haproxy exporter] ****************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+PLAY RECAP *********************************************************************
+ToxicalBullet-1            : ok=78   changed=0    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   
+ToxicalBullet-2            : ok=78   changed=0    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+ToxicalBullet-3            : ok=69   changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+
++ /home/balint/ansible-venv/bin/ansible all -b -m reboot -a test_command=uptime
+ToxicalBullet-3 | CHANGED => {
+    "changed": true,
+    "elapsed": 32,
+    "rebooted": true
+}
+ToxicalBullet-2 | CHANGED => {
+    "changed": true,
+    "elapsed": 41,
+    "rebooted": true
+}
+ToxicalBullet-1 | CHANGED => {
+    "changed": true,
+    "elapsed": 41,
+    "rebooted": true
+}
++ /home/balint/ansible-venv/bin/ansible-playbook infra.yaml --diff
+
+PLAY [Collect info about all VMs] **********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+
+TASK [setup] *******************************************************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+PLAY [Init] ********************************************************************
+
+TASK [init : Update APT cache] *************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [backup : Linux user backup] **********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [backup : Create a 2048-bit SSH key for user backup in ~backup/.ssh/id_rsa] ***
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [backup : Create a directory /home/backup/restore] ************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [backup : Install duplicity] **********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [backup : Uploads /home/backup/.ssh/known_hosts] **************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+PLAY [iptables] ****************************************************************
+
+TASK [iptables : Install iptables-persistent] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [iptables : fix ssl handshake docker] *************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [iptables : Sleep for 10 seconds and continue with play] ******************
+skipping: [ToxicalBullet-2]
+skipping: [ToxicalBullet-1]
+skipping: [ToxicalBullet-3]
+
+TASK [iptables : Check if  iptables-persistent (netfilter-persistent) is started and if it is not, start it] ***
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [iptables : load iptable-mangle config] ***********************************
+[WARNING]: Attempts to restore iptables state without rollback in case of
+mistake may lead the ansible controller to loose access to the hosts and never
+regain it before fixing firewall rules through a serial console, or any other
+way except SSH. Please set task attribute 'poll' (=15) to 0, and 'async' (=0)
+to a value >2 and not greater than 'ansible_timeout' (=30) (recommended).
+[WARNING]: Attempts to restore iptables state without rollback in case of
+mistake may lead the ansible controller to loose access to the hosts and never
+regain it before fixing firewall rules through a serial console, or any other
+way except SSH. Please set task attribute 'poll' (=15) to 0, and 'async' (=0)
+to a value >2 and not greater than 'ansible_timeout' (=30) (recommended).
+[WARNING]: Attempts to restore iptables state without rollback in case of
+mistake may lead the ansible controller to loose access to the hosts and never
+regain it before fixing firewall rules through a serial console, or any other
+way except SSH. Please set task attribute 'poll' (=15) to 0, and 'async' (=0)
+to a value >2 and not greater than 'ansible_timeout' (=30) (recommended).
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+PLAY [Bind9 DNS server] ********************************************************
+
+TASK [bind : Install bind9] ****************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [bind : Configure master file startup] ************************************
+skipping: [ToxicalBullet-2]
+skipping: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [bind : Configure reverse master file reverse] ****************************
+skipping: [ToxicalBullet-2]
+skipping: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [bind : Copy named.conf.options.j2] ***************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+
+TASK [bind : template] *********************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [bind : Copy named.conf.local.j2] *****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [bind : template] *********************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind : Stop service systemd-resolved] ************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [bind : meta flush] *******************************************************
+
+TASK [bind : Ensure bind9 is running] ******************************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [bind : Set A records] ****************************************************
+skipping: [ToxicalBullet-2] => (item={'key': 'backup', 'value': '192.168.42.156'}) 
+skipping: [ToxicalBullet-2] => (item={'key': 'cloudfare', 'value': '1.1.1.1'}) 
+skipping: [ToxicalBullet-2] => (item={'key': 'google', 'value': '8.8.8.8'}) 
+skipping: [ToxicalBullet-2] => (item={'key': 'google2', 'value': '8.8.4.4'}) 
+
+TASK [bind : Set CNAME records] ************************************************
+skipping: [ToxicalBullet-2]
+
+TASK [bind_exporter : Download bind exporter] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [bind_exporter : Start prometheus-bind-exporter] **************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+PLAY [Docker] ******************************************************************
+
+TASK [docker : Install docker.io and python3-docker] ***************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [docker : Ensure docker is running] ***************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+PLAY [nginx] *******************************************************************
+
+TASK [users : Linux user juri] *************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [users : Linux user roman] ************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [users : Public key of linux user juri] ***********************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [users : Public key of linux user roman] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [nginx : Update the repository cache and update package "nginx" to latest version] ***
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [nginx : start nginx] *****************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+
+TASK [nginx : If follow=no, /path/to/link will become a file and be overwritten by contents of foo.conf] ***
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+TASK [nginx : Copy file with owner and permissions] ****************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [nginx_exporter : Download node exporter] *********************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [nginx_exporter : template] ***********************************************
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [nginx_exporter : start prometheus-nginx-exporter] ************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+
+PLAY [Rsyslog] *****************************************************************
+
+TASK [rsyslog : Copy 10-telegraf.conf to ALL remote machines] ******************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+TASK [rsyslog : Start rsyslog] *************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-1]
+
+PLAY [Prometheus] **************************************************************
+
+TASK [prometheus : Download prometheus] ****************************************
+ok: [ToxicalBullet-3]
+
+TASK [prometheus : Copy prometheus.j2 template] ********************************
+ok: [ToxicalBullet-3]
+
+TASK [prometheus : Copy prometheus.yml.j2 template] ****************************
+ok: [ToxicalBullet-3]
+
+TASK [prometheus : Start Prometheus] *******************************************
+ok: [ToxicalBullet-3]
+
+PLAY [Database server] *********************************************************
+
+TASK [mysql : Install mysql] ***************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : Copy override config to overwrite bind address] ******************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : Instal python3 for mysql] ****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : start mysql] *****************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : MySQL database] **************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : MySQL user] ******************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : Stop service systemd-resolved] ***********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql : MySQL user for replication] **************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql : Set correct mysql server read only] ******************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_exporter : Download mysql exporter] ********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_exporter : template] ***********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_exporter : Create user exporter] ***********************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_exporter : Pause for 10 seconds] ***********************************
+skipping: [ToxicalBullet-2]
+
+TASK [mysql_exporter : service] ************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_exporter : template] ***********************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [mysql_backup : Create a directory /home/backup/mysql] ********************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_backup : MySQL user backup] ****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_backup : Copy my.cnf to /home/backup/.my.cnf] **********************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [mysql_backup : Copy cron mysql-backup to /etc/cron.d/mysql-backup] *******
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+PLAY [Node] ********************************************************************
+
+TASK [node_exporter : Download node exporter] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-3]
+ok: [ToxicalBullet-2]
+
+TASK [node_exporter : start prometheus-node-exporter] **************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-3]
+
+PLAY [Agama] *******************************************************************
+
+TASK [agama : Creating  /opt/agama] ********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Download agama container from URL] *******************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Create agama docker image] ***************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Agama-1 docker container] ****************************************
+[DEPRECATION WARNING]: The container_default_behavior option will change its 
+default value from "compatibility" to "no_defaults" in community.docker 2.0.0. 
+To remove this warning, please specify an explicit value for it now. This 
+feature will be removed from community.docker in version 2.0.0. Deprecation 
+warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [agama : Agama-2 docker container] ****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [uwsgi : Update the repository cache and update package "uwsgi" to latest version] ***
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [uwsgi : Update the package "uwsgi-plugin-python3" to latest version] *****
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [uwsgi : start uwsgi] *****************************************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+PLAY [Grafana] *****************************************************************
+
+TASK [grafana : Create two necessary directories for grafana] ******************
+ok: [ToxicalBullet-3] => (item=/opt/grafana/provisioning/dashboards)
+ok: [ToxicalBullet-3] => (item=/opt/grafana/provisioning/datasources)
+
+TASK [grafana : Copy grafana.ini template] *************************************
+ok: [ToxicalBullet-3]
+
+TASK [grafana : Copy datasource.yaml] ******************************************
+ok: [ToxicalBullet-3]
+
+TASK [grafana : Copy dashboard.yaml] *******************************************
+ok: [ToxicalBullet-3]
+
+TASK [grafana : Copy grafana dashboards] ***************************************
+ok: [ToxicalBullet-3] => (item=syslog)
+ok: [ToxicalBullet-3] => (item=mysql)
+ok: [ToxicalBullet-3] => (item=main)
+
+TASK [grafana : Grafana Docker container] **************************************
+ok: [ToxicalBullet-3]
+
+PLAY [Influx DB] ***************************************************************
+
+TASK [influxdb : Add influxdb apt key] *****************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Add influxdb's repository into sources list] ******************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Install influxdb and telegraf] ********************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Start service influxdb] ***************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Start service telegraf] ***************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb : Copy telegraf.conf] *******************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Linux user pinger] **********************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Install fping] **************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Create a directory if it does not exist] ************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : template] *******************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : template] *******************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : template] *******************************************************
+ok: [ToxicalBullet-3]
+
+TASK [pinger : Start service pinger] *******************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : Download] ********************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : Giving permission to influx_xporter] *****************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : Create service] **************************************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_exporter : start prometheus-influxdb-stats-exporter] ************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_backup : Create a directory /home/backup/influxdb] **************
+ok: [ToxicalBullet-3]
+
+TASK [influxdb_backup : Copy cron influxdb to /etc/cron.d/influxdb-backup] *****
+ok: [ToxicalBullet-3]
+
+PLAY [Keepalived and HAproxy] **************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Install keepalived] *****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Add user keepalived_script] *********************************
+ok: [ToxicalBullet-2]
+ok: [ToxicalBullet-1]
+
+TASK [keepalived : Copy keepalived conf] ***************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Copy ha88] **************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : start keepalived] *******************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Download keepalived exporter] *******************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Keepalived exporter service] ********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [keepalived : Ensure keepalived running] **********************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : Install haproxy] ***********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : Copy haproxy.conf] *********************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : Copy prometheus-haproxy-exporter] ******************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : start haproxy] *************************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+TASK [haproxy : start haproxy exporter] ****************************************
+ok: [ToxicalBullet-1]
+ok: [ToxicalBullet-2]
+
+PLAY RECAP *********************************************************************
+ToxicalBullet-1            : ok=78   changed=0    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   
+ToxicalBullet-2            : ok=78   changed=0    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+ToxicalBullet-3            : ok=69   changed=0    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+
++ date
+T 21 dets  2021 18:24:00 EET

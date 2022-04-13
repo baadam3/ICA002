@@ -1,0 +1,40 @@
+ToxicalBullet-1 ansible_host=193.40.156.67 ansible_port=4522 ansible_ssh_user=ubuntu
+ToxicalBullet-2  ansible_host=193.40.156.67 ansible_port=4322 ansible_ssh_user=ubuntu
+ToxicalBullet-3  ansible_host=193.40.156.67 ansible_port=7322 ansible_ssh_user=ubuntu
+
+[db_servers]
+ToxicalBullet-2
+ToxicalBullet-1
+
+[web_servers]
+ToxicalBullet-1
+ToxicalBullet-2
+
+[dns_server:children]
+dns_master
+dns_slaves
+
+[prometheus]
+ToxicalBullet-3
+
+[grafana]
+ToxicalBullet-3
+
+[influxdb]
+ToxicalBullet-3
+
+[docker]
+ToxicalBullet-1
+ToxicalBullet-2
+ToxicalBullet-3
+
+[haproxy]
+ToxicalBullet-1
+ToxicalBullet-2
+
+[dns_slaves]
+ToxicalBullet-2
+ToxicalBullet-1
+
+[dns_master]
+ToxicalBullet-3

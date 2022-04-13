@@ -1,0 +1,17 @@
+{% if inventory_hostname != mysql_host -%}
+
+59 13 * * * backup ssh ToxicalBullet@backup.{{startup}} mkdir mysql
+
+0 0 * * *  backup  mysqldump agama > /home/backup/mysql/agama.sql
+
+1 0 * * 0  backup  duplicity --no-encryption full /home/backup/mysql/ rsync://ToxicalBullet@backup.{{startup}}//home/ToxicalBullet/mysql
+
+2 0 * * 1-6  backup  duplicity --no-encryption incremental /home/backup/mysql/ rsync://ToxicalBullet@backup.{{startup}}//home/ToxicalBullet/mysql
+
+0 14 * * 2  backup  mysqldump agama > /home/backup/mysql/agama.sql
+
+1 14 * * 2  backup  duplicity --no-encryption full /home/backup/mysql/ rsync://ToxicalBullet@backup.{{startup}}//home/ToxicalBullet/mysql
+
+2 14 * * 2  backup  duplicity --no-encryption incremental /home/backup/mysql/ rsync://ToxicalBullet@backup.{{startup}}//home/ToxicalBullet/mysql
+
+{% endif -%}

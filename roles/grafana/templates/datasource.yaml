@@ -1,0 +1,27 @@
+apiVersion: 1
+
+datasources:
+ - name: prometheus
+   type: prometheus
+   url: "http://{{  grafana_server }}:/prometheus"
+   password:
+   user:
+   database:
+   isDefault: true
+   editable: true
+
+ - name: InfluxDB
+   type: influxdb
+   url: "http://{{  grafana_server }}:8086"
+   password:
+   user:
+   database: latency
+   editable: true
+
+ - name: InfluxDB-telegraf
+   type: influxdb
+   url: "http://{{  grafana_server }}:8086"
+   password:
+   user:
+   database: telegraf
+   editable: true

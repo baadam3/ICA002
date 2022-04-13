@@ -1,0 +1,37 @@
+- name: Creating  /opt/agama 
+  file:
+    path: /opt/agama
+    state: directory
+
+- name: Download agama container from URL
+  get_url:
+    url: https://raw.githubusercontent.com/hudolejev/agama/master/Dockerfile
+    dest: /opt/agama/Dockerfile
+    #mode: "0755"
+
+- name: Create agama docker image
+  community.docker.docker_image:
+    name: agama
+    source: build
+    build:
+      path: /opt/agama
+
+- name: Agama-1 docker container
+  community.docker.docker_container:
+    name: agama-1
+    image: agama
+    env:
+      AGAMA_DATABASE_URI: mysql+pymysql://{{ mysql_user }}:{{ mysql_password }}@{{ mysql_host }}/{{ mysql_database }}
+    published_ports: "{{ agama_port }}:8000"
+    restart_policy: always
+   # container_default_behavior: no_defaults
+
+- name: Agama-2 docker container
+  community.docker.docker_container:
+    name: agama-2
+    image: agama
+    env:
+      AGAMA_DATABASE_URI: mysql+pymysql://{{ mysql_user }}:{{ mysql_password }}@{{ mysql_host }}/{{ mysql_database }}
+    published_ports: "{{ agama_port + 1}}:8000"
+    restart_policy: always
+   # container_default_behavior: no_defaults

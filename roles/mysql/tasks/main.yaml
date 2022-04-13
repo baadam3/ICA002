@@ -1,0 +1,71 @@
+- name: Install mysql
+  apt:
+    name: mysql-server
+  notify: Restart mysql
+
+- name: Copy override config to overwrite bind address
+  ansible.builtin.template:
+    src: override.cnf
+    dest: /etc/mysql/mysql.conf.d/override.cnf
+    mode: '0644'
+  notify: 
+    - Pause
+    - Restart mysql
+
+- name: Instal python3 for mysql
+  apt:
+   name: python3-pymysql
+
+- name: start mysql
+  service:
+    name: mysql
+    state: started
+
+- name: MySQL database
+  community.mysql.mysql_db:
+    name: "{{ mysql_database }}"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+
+# - name: MySQL database
+ # community.mysql.mysql_db:
+#    name: "{{ mysql_database }}"
+
+
+- name: MySQL user
+  community.mysql.mysql_user:
+    name: "{{ mysql_user }}"
+    password: "{{ mysql_password }}"
+    host: "%"
+    priv: "{{ mysql_database }}.*:ALL"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+
+#- template:
+ #  src: resolv.conf.j2
+  # dest: /etc/resolv.conf
+
+- name: Stop service systemd-resolved
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: stopped
+    enabled: no
+
+- name: MySQL user for replication
+  community.mysql.mysql_user:
+    name: "{{ mysql_replication_user }}"
+    password: "{{ mysql_replication_pass }}"
+    host: "%"
+    priv: "*.*:REPLICATION SLAVE"
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+
+- name: Set correct mysql server read only
+  community.mysql.mysql_variables:
+   variable: read_only
+   value: "{{ 'OFF' if inventory_hostname == mysql_host else 'ON' }}"
+   mode: persist
+   login_unix_socket: /var/run/mysqld/mysqld.sock
+  notify: 
+    - Reset MySQL source
+    - Reset MySQL replica
+
